@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsplash API side project</title>
+  </head>
+  <style>
+    img {
+      width: 400px;
+      margin-bottom: 10px;
+    }
+    
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image:url(./images/sky.jpg);
+      background-size: cover; /* Cover the entire element */
+      background-position: center; /* Center the image */
+      background-repeat: no-repeat; /* Prevent repeating the image */
+
+    }
+
+    .container{
+      display: inline-flex;
+      position: relative;
+      width: 600px;
+      height: 600px;
+      text-align: center;
+      margin-top: 100px;
+      margin-bottom: 100px;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    /* button{
+      cursor: pointer;
+      width: 300px;
+      height: 50px;
+      border-radius: 10px;
+
+      
+    }
+    */
+
+/* CSS */
+.button-18 {
+  align-items: center;
+  background-color: #0A66C2;
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  margin-top: 10px;
+}
+
+.button-18:hover,
+.button-18:focus { 
+  background-color: #16437E;
+  color: #ffffff;
+}
+
+.button-18:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, .7);
+}
+
+.button-18:disabled { 
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, .08);
+  color: rgba(0, 0, 0, .3);
+}
+
+  </style>
+  <body>
+    <div class="container">
+    <div>
+  <h1 id="encourage"> Have a Good Dog Today </h1>
+  <img id="myImage" alt=""> 
+  <button class="button-18"   onclick="addOrUpdateImage()"> Press Here to Encourage Yourself </button>
+    </div>
+
+  </div>
+
+  </body>
+  <script>
+
+  async function addOrUpdateImage() {
+  // Get the image element
+  const imageElement = document.getElementById('myImage'); // Replace with actual ID
+  const ptext= document.getElementById('encourage');
+
+  var word =[ " Yon can do it "," You are the Best ", " Have a Nice Day "," Good thing will happen soon "," Don't Worry Be Happy " , "Believe Yourslef" ];
+  var people= word.length;
+  var random=Math.floor(Math.random() * people);
+  encourage= word[random]  ;
+
+
+  // Check if an image already exists
+  if (imageElement.src) {
+    // Replace the existing image with a random photo
+    const imageUrl = await getRandomDogPhotoUrl();
+    if (imageUrl) {
+      imageElement.src = imageUrl;
+      ptext.innerText=encourage;
+    }
+  } else {
+    // Add a new image
+    const imageUrl = await getRandomDogPhotoUrl();
+    if (imageUrl) {
+      imageElement.src = imageUrl;
+      ptext.innerText=encourage;
+      imageElement.style.display = 'block'; // Make the image visible
+    }
+  }
+}
+
+// Generate a random dog photo URL
+async function getRandomDogPhotoUrl() {
+  const accessKey = 'PsdWth6-tm5Mmjz5HB3QKX8aJwB7o9HKPB_TaTFU99E' ; // Replace with your actual access key
+  const url = `https://api.unsplash.com/photos/random?query=dog&client_id=${accessKey}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (response.ok) {
+      return data.urls.regular// Get the regular image URL
+    } else {
+      console.error('Error fetching random photo:', response.status);
+      return null; // Handle error or use a default image
+    }
+  } catch (error) {
+    console.error('Error fetching random photo:', error);
+    return null; // Handle error or use a default image
+  }
+}
+
+
+
+  </script>
+</html>
+
